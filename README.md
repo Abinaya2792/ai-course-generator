@@ -15,47 +15,46 @@ An intelligent, full-stack educational course creator that leverages state-of-th
 
 ```mermaid
 graph TD
-    %% Frontend Layer
-    subgraph Frontend [Client Layer: React 19 + Vite]
-        UI[User Interface] -->|1. Submit Topic & Folder Path| API_Call[HTTP POST Request]
-    end
+   %% Frontend Layer
+   subgraph Frontend [Client Layer: React 19 + Vite]
+      UI[User Interface] -->|1. Submit Topic & Folder Path| API_Call[HTTP POST Request]
+   end
 
-    %% Backend Gateway Layer
-    subgraph Backend [Backend Server Gateway: FastAPI]
-        API_Call -->|2. Receive Payload| CORS[CORS Settings & Path Validation]
-        CORS -->|3. Establish Connection| SSE[Server-Sent Events Stream]
-    end
+   %% Backend Gateway Layer
+   subgraph Backend [Backend Server Gateway: FastAPI]
+      API_Call -->|2. Receive Payload| CORS[CORS Settings & Path Validation]
+      CORS -->|3. Establish Connection| SSE[Server-Sent Events Stream]
+   end
 
-    %% Multi-Agent Core Layer
-    subgraph AI_Engine [Multi-Agent Core: LangGraph Engine]
-        SSE -->|4. Invoke Workflow| Node1[1. Extract Context Node <br> Reads PDFs/TXT via PyMuPDF]
-        Node1 --> Node2[2. Curriculum Designer <br> Validates Relevancy]
-        
-        %% Relevance Check Conditional
-        Node2 -->|If Unrelated| END_Early[Abrupt Termination]
-        Node2 -->|If Related| Node3[3. Content Writer Agent <br> Drafts Course Material]
-        
-        %% Reflection Loop Routing
-        Node3 --> Node_Rev[Reviewer Agent <br> Evaluates Content Depth]
-        Node_Rev -->|If Rejected: Loops Feedback| Node3
-        
-        %% Finalizing Pipeline
-        Node_Rev -->|If Approved| Node4[4. Quiz Generator <br> Crafts Grounded MCQs]
-        Node4 --> Node5[5. Summarizer Agent <br> Generates Final Takeaway]
-        Node5 -->|6. Compile Output| Graph_End([Workflow Complete])
-    end
+   %% Multi-Agent Core Layer
+   subgraph AI_Engine [Multi-Agent Core: LangGraph Engine]
+      SSE -->|4. Invoke Workflow| Node1[1. Extract Context Node <br> Reads PDFs/TXT via PyMuPDF]
+      Node1 --> Node2[2. Curriculum Designer <br> Validates Relevancy]
+      
+      %% Relevance Check Conditional
+      Node2 -->|If Unrelated| END_Early[Abrupt Termination]
+      Node2 -->|If Related| Node3[3. Content Writer Agent <br> Drafts Course Material]
+      
+      %% Reflection Loop Routing
+      Node3 --> Node_Rev[Reviewer Agent <br> Evaluates Content Depth]
+      Node_Rev -->|If Rejected: Loops Feedback| Node3
+      
+      %% Finalizing Pipeline
+      Node_Rev -->|If Approved| Node4[4. Quiz Generator <br> Crafts Grounded MCQs]
+      Node4 --> Node5[5. Summarizer Agent <br> Generates Final Takeaway]
+      Node5 -->|6. Compile Output| Graph_End([Workflow Complete])
+   end
 
-    %% Response Delivery
-    Graph_End -->|7. Push Step State Events| SSE
-    SSE -->|8. Stream text/event-stream| UI
-    UI -->|9. Render Output| MD[React Markdown View Cards]
+   %% Response Delivery
+   Graph_End -->|7. Push Step State Events| SSE
+   SSE -->|8. Stream text/event-stream| UI
+   UI -->|9. Render Output| MD[React Markdown View Cards]
 
-    %% Styling Elements
-    style Frontend fill:#1f2937,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style Backend fill:#111827,stroke:#10b981,stroke-width:2px,color:#fff
-    style AI_Engine fill:#1e1b4b,stroke:#8b5cf6,stroke-width:2px,color:#fff
-    style END_Early fill:#991b1b,stroke:#ef4444,color:#fff
-
+   %% Styling Elements
+   style Frontend fill:#1f2937,stroke:#3b82f6,stroke-width:2px,color:#fff
+   style Backend fill:#111827,stroke:#10b981,stroke-width:2px,color:#fff
+   style AI_Engine fill:#1e1b4b,stroke:#8b5cf6,stroke-width:2px,color:#fff
+   style END_Early fill:#991b1b,stroke:#ef4444,color:#fff
 
 ## Quick Start 🚀
 
