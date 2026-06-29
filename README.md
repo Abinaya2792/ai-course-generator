@@ -55,6 +55,7 @@ graph TD
    style Backend fill:#111827,stroke:#10b981,stroke-width:2px,color:#fff
    style AI_Engine fill:#1e1b4b,stroke:#8b5cf6,stroke-width:2px,color:#fff
    style END_Early fill:#991b1b,stroke:#ef4444,color:#fff
+```
 
 ## Quick Start 🚀
 
@@ -69,54 +70,54 @@ graph TD
 1. Navigate to the backend folder:
 ```bash
    cd backend
-
+```
 
 Create and activate a virtual environment:
 
-Bash 
+```Bash 
 
 python -m venv venv
    # On Windows (PowerShell):
    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
    venv\Scripts\activate
-
+```
 Install dependencies:
-
+```
 Bash
    pip install -r requirements.txt
-
+```
 Create a .env file in the root of the backend/ directory and add your key:
-
+```
 Code snippet
    GROQ_API_KEY=your_actual_groq_api_key_here
-
+```
 Spin up the FastAPI server:
-
+```
 Bash
    python main.py
-
+```
 The server will boot up locally at http://localhost:8000.
 
 Step 2: Set Up the Frontend Interface
 Open a new terminal window/tab and navigate to the frontend folder:
-
+```
 Bash
    cd frontend
-
+```
 Install the node modules:
-
+```
 Bash
    npm install
-
+```
 Boot up the Vite web application:
-
+```
 Bash
    npm run dev
-
+```
 Click the local server link displayed in your terminal (typically http://localhost:5173/) to launch the generator!
 
 Project File Mapping
-
+```
 course-generator/
 ├── backend/
 │   ├── graph.py             # LangGraph workflow, Agents, & State Machine
@@ -130,7 +131,7 @@ course-generator/
 │   └── eslint.config.js     # Code linter standards configuration
 └── .gitignore               # Keeps secrets (.env) out of GitHub
 
-
+```
 Behind the Code: Deep Technical Core
 1. Centralized State Engine (graph.py)
 The collective data parameters passing between independent agents are controlled by a fixed state footprint utilizing Python's TypedDict:
@@ -149,7 +150,7 @@ class CourseState(TypedDict):
 
 2. Guardrails & Reflection Mechanics
 To guarantee absolute content factual accuracy, the system leverages conditional routing paths within the workflow configuration:
-
+```
 Python
 workflow.add_conditional_edges(
     "review_content",
@@ -159,10 +160,10 @@ workflow.add_conditional_edges(
         "write_content": "write_content"  # Re-routes backwards to rewrite if feedback triggers
     }
 )
-
+```
 3. Server-Sent Events (SSE) Interface (main.py)
 The backend provides immediate step feedback metrics to the client browser by parsing yielding stream updates over a dedicated HTTP channel connection:
-
+```
 Python
 @app.post("/generate")
 async def generate_course(req: GenerationRequest):
@@ -170,7 +171,7 @@ async def generate_course(req: GenerationRequest):
         for message in generate_course_stream(req.topic, req.folder_path):
             yield f"data: {message}\n\n"
     return StreamingResponse(event_generator(), media_type="text/event-stream")
-
+```
 Performance & Token Budget Strategies ⚡
 Context Optimization: To ensure the engine never breaks or drops due to strict rate limitations, source text inputs are automatically bounded to a strict 12,000 character maximum limit, retaining complete structural focus inside a tight, cost-effective processing loop.
 
